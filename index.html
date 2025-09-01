@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Stellar Pool - Space Physics Game</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+  <div id="gameContainer">
+    <!-- Game Board -->
+    <div id="unifiedBoard">
+      <!-- Stars -->
+      <div id="star1" class="star selected"></div>
+      <div id="star2" class="star"></div>
+      <div id="star3" class="star"></div>
+      
+      <!-- Holes -->
+      <div id="hole1" class="hole"></div>
+      <div id="hole2" class="hole"></div>
+      <div id="hole3" class="hole"></div>
+      <div id="hole4" class="hole"></div>
+      <div id="hole5" class="hole active"></div>
+      
+      <!-- Meteorites -->
+      <div id="meteorite1" class="meteorite"></div>
+      <div id="meteorite2" class="meteorite"></div>
+    </div>
+    
+    <!-- Game HUD -->
+    <div id="gameHeader">
+      <div id="hudContainer">
+        <div class="hud-item">
+          <div class="hud-label">SCORE:</div>
+          <div id="scoreValue" class="hud-value">0</div>
+        </div>
+        
+        <div class="hud-item">
+          <div class="hud-label">LEVEL:</div>
+          <div id="levelValue" class="hud-value">1</div>
+        </div>
+        
+        <div class="hud-item">
+          <div class="hud-label">TIME:</div>
+          <div id="timeValue" class="hud-value">1:00</div>
+        </div>
+        
+        <!-- Active powerups will go here -->
+        <div id="powerupsContainer"></div>
+      </div>
+      
+      <!-- Game controls -->
+      <div class="game-controls">
+        <button id="pauseButton" class="control-button">⏸</button>
+        <button id="switchButton" class="control-button">⟳</button>
+        <button id="powerupButton" class="control-button" disabled>✨</button>
+      </div>
+    </div>
+    
+    <!-- Level indicator -->
+    <div id="levelIndicator">LEVEL 1</div>
+    
+    <!-- Menu Overlay -->
+    <div id="menuOverlay" class="menu-animated">
+      <h1 class="game-title">STELLAR POOL</h1>
+      
+      <button id="startGameButton" class="menu-button">START GAME</button>
+      <button id="instructionsButton" class="menu-button">INSTRUCTIONS</button>
+      <button id="highScoresButton" class="menu-button">HIGH SCORES</button>
+      
+      <div class="settings-container">
+        <h2 class="settings-title">GAME SETTINGS</h2>
+        
+        <div class="settings-grid">
+          <div class="settings-option">
+            <label for="timeSelect" class="settings-label">TIME LIMIT</label>
+            <select id="timeSelect">
+              <option value="30">30 seconds</option>
+              <option value="60" selected>60 seconds</option>
+              <option value="90">90 seconds</option>
+              <option value="120">120 seconds</option>
+            </select>
+          </div>
+          
+          <div class="settings-option">
+            <label for="aimLineToggle" class="settings-label">AIM LINE</label>
+            <label class="toggle-container">
+              <input type="checkbox" id="aimLineToggle" checked>
+              <span class="toggle-slider"></span>
+            </label>
+          </div>
+          
+          <div class="settings-option">
+            <label for="pointerStyleSelect" class="settings-label">POINTER STYLE</label>
+            <select id="pointerStyleSelect">
+              <option value="orbital">Orbital</option>
+              <option value="line">Line</option>
+              <option value="none">None</option>
+            </select>
+          </div>
+          
+          <div class="settings-option">
+            <label for="trajectoryToggle" class="settings-label">SHOW TRAJECTORY</label>
+            <label class="toggle-container">
+              <input type="checkbox" id="trajectoryToggle" checked>
+              <span class="toggle-slider"></span>
+            </label>
+          </div>
+          
+          <div class="settings-option">
+            <label for="controlModeSelect" class="settings-label">CONTROL MODE</label>
+            <select id="controlModeSelect">
+              <option value="flipper">Flipper</option>
+              <option value="drag">Drag</option>
+            </select>
+          </div>
+          
+          <div class="settings-option">
+            <label for="soundToggle" class="settings-label">SOUND</label>
+            <label class="toggle-container">
+              <input type="checkbox" id="soundToggle">
+              <span class="toggle-slider"></span>
+            </label>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    <!-- Game Over Overlay -->
+    <div id="gameOverlay">
+      <h1 class="game-over-title">GAME OVER</h1>
+      
+      <div class="stats-container">
+        <div class="stat-item">
+          <div class="stat-label">Final Score:</div>
+          <div id="finalScore" class="stat-value">0</div>
+        </div>
+        
+        <div class="stat-item">
+          <div class="stat-label">Highest Level:</div>
+          <div id="maxLevel" class="stat-value">1</div>
+        </div>
+        
+        <div class="stat-item">
+          <div class="stat-label">Play Time:</div>
+          <div id="playTime" class="stat-value">0:00</div>
+        </div>
+      </div>
+      
+      <button id="restartButton" class="menu-button game-over-button">PLAY AGAIN</button>
+      <button id="menuButton" class="menu-button game-over-button">MAIN MENU</button>
+    </div>
+    
+    <!-- Pause Overlay -->
+    <div id="pauseOverlay">
+      <h1 class="pause-title">GAME PAUSED</h1>
+      
+      <button id="resumeButton" class="menu-button">RESUME</button>
+      <button id="quitButton" class="menu-button">QUIT TO MENU</button>
+    </div>
+  </div>
+  
+  <!-- Scripts -->
+  <script type="module" src="game.js"></script>
+  
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+    
+      // Set up event listeners for specific buttons outside the main game loop
+      const pauseButton = document.getElementById('pauseButton');
+      if (pauseButton) {
+        pauseButton.addEventListener('click', function() {
+          if (window.stellarPoolGame) {
+            window.stellarPoolGame.togglePause();
+          }
+        });
+      }
+      
+      const switchButton = document.getElementById('switchButton');
+      if (switchButton) {
+        switchButton.addEventListener('click', function() {
+          if (window.stellarPoolGame) {
+            window.stellarPoolGame.switchActiveStar();
+          }
+        });
+      }
+      
+      const resumeButton = document.getElementById('resumeButton');
+      if (resumeButton) {
+        resumeButton.addEventListener('click', function() {
+          if (window.stellarPoolGame) {
+            window.stellarPoolGame.togglePause();
+          }
+        });
+      }
+      
+      const restartButton = document.getElementById('restartButton');
+      if (restartButton) {
+        restartButton.addEventListener('click', function() {
+          if (window.stellarPoolGame) {
+            window.stellarPoolGame.startGame();
+          }
+        });
+      }
+      
+      // Disable context menu to prevent interference with the game
+      document.addEventListener('contextmenu', function(e) {
+        e.preventDefault();
+      });
+      
+      // Prevent pull-to-refresh on mobile
+      document.body.addEventListener('touchmove', function(e) {
+        if (e.touches.length > 1) {
+          e.preventDefault();
+        }
+      }, { passive: false });
+    });
+  </script>
+</body>
+</html>
